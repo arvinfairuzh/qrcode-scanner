@@ -30,7 +30,7 @@ class HomeController extends Controller
     function report($event_id)
     {
         $data['event'] = Event::find($event_id);
-        $data['data'] = EventQrCode::where('event_id', $event_id)->get()->map(function ($item) {
+        $data['data'] = EventQrCode::where(['event_id' => $event_id, 'scanned' => true])->get()->map(function ($item) {
             $qrCode = QrCode::where('qrcode_id', $item->qrcode_id)->first();
             return [
                 'name' => $qrCode->name,

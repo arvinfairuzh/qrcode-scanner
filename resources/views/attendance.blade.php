@@ -8,11 +8,28 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
+    <!-- DataTables Buttons CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- DataTables Buttons JS -->
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+
+    <!-- JSZip for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+    <!-- PDFMake for PDF export -->
+    <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.36/build/pdfmake.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfmake@0.1.36/build/vfs_fonts.js"></script>
+
+    <!-- Buttons for CSV, Excel, and PDF exports -->
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
 
     <style>
         body {
@@ -54,7 +71,7 @@
                 <tr>
                     <td>{{$item['name']}}</td>
                     <td>{{$item['category']}}</td>
-                    <td>{{$item['scanned']}}/td>
+                    <td>{{$item['scanned']}}</td>
                     <td>{{$item['date']}}</td>
                 </tr>
                 @endforeach
@@ -66,9 +83,39 @@
 
     <!-- DataTable Initialization Script -->
     <script>
-        $(document).ready(function() {
-        $('#example').DataTable(); // Initialize the DataTable
-    });
+        $('#example').DataTable({
+            "pageLength": 100,
+            dom: 'Bfrtip', // Defines where the buttons appear
+            buttons: [
+                {
+                    extend: 'csv',
+                    footer: true
+                },
+                {
+                    extend: 'excel',
+                    footer: true
+                },
+                {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    download: 'open',
+                    footer: true,
+                    pageSize: 'A4',
+                    title: '',
+                    customize: function (doc) {
+                        doc.content.splice(0, 0,
+                            {
+                                margin: [0, 0, 0, 12],
+                                alignment: 'left',
+                                text: 'Laporan Kehadiran',
+                                fontSize: 16,
+                                bold: true
+                            },
+                        );
+                    }
+                }
+            ],
+        });
     </script>
 
 </body>
