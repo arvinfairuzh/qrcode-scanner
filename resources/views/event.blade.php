@@ -56,7 +56,7 @@
         <div class="header">{{$event['event_name']}}</div>
         <div class="event-details" id="eventDetails">
             <div id="reader"></div>
-            <p>Scanned result: <span id="result"></span></p>
+            <p><span id="result">Scanner Siap</span></p>
         </div>
 
     </div>
@@ -70,7 +70,7 @@
             if (scanningEnabled) {
                  // Disable scanning
                 scanningEnabled = false;
-
+                document.getElementById('result').innerText = 'Scanner Belum Siap';
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': '<?= csrf_token() ?>'
@@ -86,11 +86,9 @@
                     success: function(response) {
                         if(response === '1') {
                             toastr.success("Berhasil");
-                            document.getElementById('result').innerText = 'Berhasil';
                         }
                         else {
                             toastr.error(response);
-                            document.getElementById('result').innerText = response;
                         }
                     },
                     error: function(xhr, status, error) {
@@ -99,7 +97,8 @@
                 });
                 setTimeout(() => {
                     scanningEnabled = true;
-                }, 3000); // Adjust the delay as needed
+                    document.getElementById('result').innerText = 'Scanner Siap';
+                }, 5000); // Adjust the delay as needed
             }
         }
 
