@@ -56,7 +56,12 @@
         <div class="header">{{$event['event_name']}}</div>
         <div class="event-details" id="eventDetails">
             <div id="reader"></div>
-            <p><span id="result">Scanner Siap</span></p>
+            <div id="status-scanner-yes"
+                style="background-color: rgb(114, 255, 119); width: 100%; height: 10px; border-radius: 0px 0px 5px 5px">
+            </div>
+            <div id="status-scanner-no"
+                style="background-color: rgb(255, 114, 114); width: 100%; height: 10px; border-radius: 0px 0px 5px 5px; display: none;">
+            </div>
         </div>
 
     </div>
@@ -70,7 +75,8 @@
             if (scanningEnabled) {
                  // Disable scanning
                 scanningEnabled = false;
-                document.getElementById('result').innerText = 'Scanner Belum Siap';
+                document.getElementById('status-scanner-no').style.display = 'none';
+                document.getElementById('status-scanner-yes').style.display = 'block';
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': '<?= csrf_token() ?>'
@@ -92,12 +98,13 @@
                         }
                     },
                     error: function(xhr, status, error) {
-                        document.getElementById('result').innerText = decodedText + ' GAGAL';
+                        // document.getElementById('status-scanner').innerText = decodedText + ' GAGAL';
                     }
                 });
                 setTimeout(() => {
                     scanningEnabled = true;
-                    document.getElementById('result').innerText = 'Scanner Siap';
+                    document.getElementById('status-scanner-no').style.display = 'none';
+                    document.getElementById('status-scanner-yes').style.display = 'block';
                 }, 5000); // Adjust the delay as needed
             }
         }
