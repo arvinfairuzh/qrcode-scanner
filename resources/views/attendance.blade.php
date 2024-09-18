@@ -116,6 +116,9 @@
                 }
             ],
         });
+        setInterval(function() {
+            window.location.reload();
+        }, 5000); // 5000 milliseconds = 5 seconds
     </script>
 
 </body>

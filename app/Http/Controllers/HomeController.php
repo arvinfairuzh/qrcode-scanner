@@ -15,7 +15,7 @@ class HomeController extends Controller
 {
     function index()
     {
-        $data['events'] = Event::where('event_date', '>', Carbon::now())->get();
+        $data['events'] = Event::where('event_date', '>=', Carbon::now())->get();
 
         return view('home', $data);
     }
