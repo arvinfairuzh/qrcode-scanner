@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -62,6 +63,7 @@
     {{-- <script src="https://12d6-125-160-97-164.ngrok-free.app/assets/html5-qrcode.min.js"></script> --}}
     <script src="{{asset('/assets/html5-qrcode.min.js')}}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         let scanningEnabled = true; // Flag to control scanning
         function onScanSuccess(decodedText, decodedResult) {
@@ -82,14 +84,19 @@
                         event_id: "{{$event->event_id}}", // Sending the decodedText to the server
                     },
                     success: function(response) {
-                        if(response === '1') document.getElementById('result').innerText = 'Berhasil';
-                        else document.getElementById('result').innerText = response;
+                        if(response === '1') {
+                            toastr.success("Berhasil");
+                            document.getElementById('result').innerText = 'Berhasil';
+                        }
+                        else {
+                            toastr.error(response);
+                            document.getElementById('result').innerText = response;
+                        }
                     },
                     error: function(xhr, status, error) {
                         document.getElementById('result').innerText = decodedText + ' GAGAL';
                     }
                 });
-
                 setTimeout(() => {
                     scanningEnabled = true;
                 }, 3000); // Adjust the delay as needed
