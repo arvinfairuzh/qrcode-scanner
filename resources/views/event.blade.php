@@ -75,8 +75,8 @@
             if (scanningEnabled) {
                  // Disable scanning
                 scanningEnabled = false;
-                document.getElementById('status-scanner-no').style.display = 'none';
-                document.getElementById('status-scanner-yes').style.display = 'block';
+                document.getElementById('status-scanner-no').style.display = 'block';
+                document.getElementById('status-scanner-yes').style.display = 'none';
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': '<?= csrf_token() ?>'
