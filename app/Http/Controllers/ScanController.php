@@ -12,11 +12,11 @@ class ScanController extends Controller
     {
         $data = $request->all();
         $findQrCode = QrCode::where('code', $data['code'])->first();
-        if (!$findQrCode) return false;
+        if (!$findQrCode) return 'QR Code tidak valid';
 
         $findEventQrCode = EventQrCode::where(['event_id' => $data['event_id'], 'qrcode_id' => $findQrCode['qrcode_id']])->first();
-        if (!$findEventQrCode) return false;
-        if ($findEventQrCode['scanned']) return false;
+        if (!$findEventQrCode) return 'QR Code tidak terdaftar di acara ini';
+        if ($findEventQrCode['scanned']) return 'QR Code sudah pernah didata';
         $findEventQrCode->scanned = true;
         $findEventQrCode->save();
 

@@ -80,7 +80,7 @@
                 success: function(response) {
                     console.log('AJAX request successful:', response);
                     if(response === '1') document.getElementById('result').innerText = 'Berhasil';
-                    else document.getElementById('result').innerText = 'GAGAL';
+                    else document.getElementById('result').innerText = response;
                 },
                 error: function(xhr, status, error) {
                     console.error('AJAX request failed:', error);
