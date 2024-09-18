@@ -63,30 +63,37 @@
     <script src="{{asset('/assets/html5-qrcode.min.js')}}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
+        let scanningEnabled = true; // Flag to control scanning
         function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code matched = ${decodedText}`, decodedResult);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-                }
-            });
-            $.ajax({
-                url: "{{url('scanning')}}", // Replace with your server-side endpoint URL
-                method: 'POST',
-                data: {
-                    code: decodedText, // Sending the decodedText to the server
-                    event_id: "{{$event->event_id}}", // Sending the decodedText to the server
-                },
-                success: function(response) {
-                    console.log('AJAX request successful:', response);
-                    if(response === '1') document.getElementById('result').innerText = 'Berhasil';
-                    else document.getElementById('result').innerText = response;
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX request failed:', error);
-                    document.getElementById('result').innerText = decodedText + ' GAGAL';
-                }
-            });
+            if (scanningEnabled) {
+                 // Disable scanning
+                scanningEnabled = false;
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+                    }
+                });
+                $.ajax({
+                    url: "{{url('scanning')}}", // Replace with your server-side endpoint URL
+                    method: 'POST',
+                    data: {
+                        code: decodedText, // Sending the decodedText to the server
+                        event_id: "{{$event->event_id}}", // Sending the decodedText to the server
+                    },
+                    success: function(response) {
+                        if(response === '1') document.getElementById('result').innerText = 'Berhasil';
+                        else document.getElementById('result').innerText = response;
+                    },
+                    error: function(xhr, status, error) {
+                        document.getElementById('result').innerText = decodedText + ' GAGAL';
+                    }
+                });
+
+                setTimeout(() => {
+                    scanningEnabled = true;
+                }, 3000); // Adjust the delay as needed
+            }
         }
 
         function onScanFailure(error) {
