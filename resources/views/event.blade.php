@@ -105,7 +105,7 @@
                     scanningEnabled = true;
                     document.getElementById('status-scanner-no').style.display = 'none';
                     document.getElementById('status-scanner-yes').style.display = 'block';
-                }, 5000); // Adjust the delay as needed
+                }, 3000); // Adjust the delay as needed
             }
         }
 
