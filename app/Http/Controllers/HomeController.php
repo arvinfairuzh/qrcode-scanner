@@ -27,6 +27,22 @@ class HomeController extends Controller
         return view('event', $data);
     }
 
+    function report($event_id)
+    {
+        $data['event'] = Event::find($event_id);
+        $data['data'] = EventQrCode::where('event_id', $event_id)->get()->map(function ($item) {
+            $qrCode = QrCode::where('qrcode_id', $item->qrcode_id)->first();
+            return [
+                'name' => $qrCode->name,
+                'category' => $qrCode->category,
+                'scanned' => $item->scanned ? 'HADIR' : 'TIDAK HADIR',
+                'date' => $item->updated_at
+            ];
+        });
+
+        return view('attendance', $data);
+    }
+
     function eventAjax($event_id)
     {
         $event = Event::find($event_id);
