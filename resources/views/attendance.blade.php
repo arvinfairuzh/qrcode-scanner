@@ -10,9 +10,10 @@
 
     <!-- DataTables Buttons CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -30,6 +31,7 @@
     <!-- Buttons for CSV, Excel, and PDF exports -->
     <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <style>
         body {
@@ -57,6 +59,7 @@
 <body>
 
     <div class="container">
+        <input type="text" id="qrInput" placeholder="Scan QR here" />
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -83,42 +86,100 @@
 
     <!-- DataTable Initialization Script -->
     <script>
-        $('#example').DataTable({
-            "pageLength": 100,
-            dom: 'Bfrtip', // Defines where the buttons appear
-            buttons: [
-                {
-                    extend: 'csv',
-                    footer: true
-                },
-                {
-                    extend: 'excel',
-                    footer: true
-                },
-                {
-                    extend: 'pdfHtml5',
-                    orientation: 'portrait',
-                    download: 'open',
-                    footer: true,
-                    pageSize: 'A4',
-                    title: '',
-                    customize: function (doc) {
-                        doc.content.splice(0, 0,
-                            {
-                                margin: [0, 0, 0, 12],
-                                alignment: 'left',
-                                text: 'Laporan Kehadiran',
-                                fontSize: 16,
-                                bold: true
-                            },
-                        );
+        $(document).ready(function() {
+            $('#example').DataTable({
+                "pageLength": 100,
+                dom: 'Bfrtip', // Defines where the buttons appear
+                buttons: [
+                    {
+                        extend: 'csv',
+                        footer: true
+                    },
+                    {
+                        extend: 'excel',
+                        footer: true
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'portrait',
+                        download: 'open',
+                        footer: true,
+                        pageSize: 'A4',
+                        title: '',
+                        customize: function (doc) {
+                            doc.content.splice(0, 0,
+                                {
+                                    margin: [0, 0, 0, 12],
+                                    alignment: 'left',
+                                    text: 'Laporan Kehadiran',
+                                    fontSize: 16,
+                                    bold: true
+                                },
+                            );
+                        }
                     }
-                }
-            ],
+                ],
+            });
+
+            $('#qrInput').focus();
+            // When QR scanner inputs a result
+            $('#qrInput').on('change', function() {
+                var qrResult = $(this).val();
+                console.log(qrResult);
+                // if (qrResult.length > 0) {
+                //     $.ajaxSetup({
+                //         headers: {
+                //             'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+                //         }
+                //     });
+                //     $.ajax({
+                //         url: "{{url('scanning')}}",
+                //         method: 'POST',
+                //         data: {
+                //             code: qrResult,
+                //             event_id: "{{$event->event_id}}",
+                //         },
+                //         success: function(response) {
+                //             toastr.options = {
+                //                 "closeButton": true,
+                //                 "debug": false,
+                //                 "newestOnTop": false,
+                //                 "progressBar": true,
+                //                 "positionClass": "toast-bottom-center", // Position at the bottom center
+                //                 "preventDuplicates": false,
+                //                 "onclick": null,
+                //                 "showDuration": "300",
+                //                 "hideDuration": "1000",
+                //                 "timeOut": "5000",
+                //                 "extendedTimeOut": "1000",
+                //                 "showEasing": "swing",
+                //                 "hideEasing": "linear",
+                //                 "showMethod": "fadeIn",
+                //                 "hideMethod": "fadeOut"
+                //             };
+                //             if(response === '1') {
+                //                 toastr.success("Berhasil");
+                //             }
+                //             else {
+                //                 toastr.error(response);
+                //             }
+                //         },
+                //         error: function(xhr, status, error) {
+                //             // document.getElementById('status-scanner').innerText = decodedText + ' GAGAL';
+                //         }
+                //     });
+
+                //     $(this).val('');
+                // }
+            });
+
+            $(document).on('click', function() {
+                $('#qrInput').focus();
+            });
         });
-        setInterval(function() {
-            window.location.reload();
-        }, 5000); // 5000 milliseconds = 5 seconds
+        // setInterval(function() {
+        //     window.location.reload();
+        // }, 5000); // 5000 milliseconds = 5 seconds
     </script>
 
 </body>

@@ -29,11 +29,13 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Pimpinan Bawaslu Jatim', 'amount' => 8],
             ['name' => 'Sekretariat Bawaslu Jatim', 'amount' => 12],
             ['name' => 'Paslon', 'amount' => 6],
-            ['name' => 'Tim Pendukun', 'amount' => 50],
+            ['name' => 'Tim Pendukun', 'amount' => 300],
             ['name' => 'Keamanan', 'amount' => 50],
             ['name' => 'Media', 'amount' => 120],
-            ['name' => 'Stakeholder', 'amount' => 30],
+            ['name' => 'Stakeholder', 'amount' => 70],
             ['name' => 'KPU RI', 'amount' => 10],
+            ['name' => 'Sekretariat KPU Jatim All Access', 'amount' => 10],
+            ['name' => 'Etnika Production All Access', 'amount' => 20],
         ];
 
         foreach ($data as $i => $item) {
