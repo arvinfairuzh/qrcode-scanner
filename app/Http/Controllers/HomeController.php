@@ -46,7 +46,7 @@ class HomeController extends Controller
 
     public function getAttendance()
     {
-        $data = EventQrCode::with('qrcode')
+        $data = EventQrCode::select('event_qrcodes.*')->with('qrcode')
             ->where('scanned', 1)
             ->orderBy('event_qrcodes.updated_at', 'desc');
         return DataTables::of($data)
@@ -56,10 +56,12 @@ class HomeController extends Controller
             ->editColumn('category', function ($row) {
                 return $row->qrcode->category;
             })
+            ->editColumn('scanned', function ($row) {
+                return $row->scanned ? 'Hadir' : 'Tidak Hadir';
+            })
             ->editColumn('updated_at', function ($row) {
                 return Carbon::parse($row->updated_at)->format('l, d F Y H:i:s');
             })
-            // ->rawColumns(['order_no', 'saldo', 'total', 'dp_order', 'action', 'status', 'seat_no', 'is_reservation', 'take_saldo'])
             ->make(true);
     }
 

@@ -155,7 +155,7 @@
                                 "debug": false,
                                 "newestOnTop": false,
                                 "progressBar": true,
-                                "positionClass": "toast-bottom-center", // Position at the bottom center
+                                "positionClass": "toast-top-center", // Position at the bottom center
                                 "preventDuplicates": false,
                                 "onclick": null,
                                 "showDuration": "300",
