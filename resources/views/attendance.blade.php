@@ -173,8 +173,10 @@
                             else {
                                 toastr.error(response);
                             }
+                            table.ajax.reload();
                         },
                         error: function(xhr, status, error) {
+                            table.ajax.reload();
                             // document.getElementById('status-scanner').innerText = decodedText + ' GAGAL';
                         }
                     });
