@@ -59,7 +59,7 @@
 <body>
 
     <div class="container">
-        <input type="text" id="qrInput" placeholder="Scan QR here" />
+        <input type="text" id="qrInput" placeholder="Scan QR here" style="width: 1px; outline: none; border: none;" />
         <table id="example" class="display" style="width:100%">
             <thead>
                 <tr>
@@ -87,9 +87,11 @@
     <!-- DataTable Initialization Script -->
     <script>
         $(document).ready(function() {
-            $('#example').DataTable({
-                "pageLength": 100,
+            var table = $('#example').DataTable({
+                processing: true,
+                serverSide: true,
                 dom: 'Bfrtip', // Defines where the buttons appear
+                searching: false,
                 buttons: [
                     {
                         extend: 'csv',
@@ -119,6 +121,14 @@
                         }
                     }
                 ],
+                ajax: `{{ url('/event/$event->event_id/table') }}`,
+                columns: [
+                    { data: 'name', name: 'qrcode.name' },
+                    { data: 'category', name: 'qrcode.category' },
+                    { data: 'scanned', name: 'scanned' },
+                    { data: 'updated_at', name: 'updated_at' },
+                ],
+                paging: false,
             });
 
             $('#qrInput').focus();
@@ -126,51 +136,51 @@
             $('#qrInput').on('change', function() {
                 var qrResult = $(this).val();
                 console.log(qrResult);
-                // if (qrResult.length > 0) {
-                //     $.ajaxSetup({
-                //         headers: {
-                //             'X-CSRF-TOKEN': '<?= csrf_token() ?>'
-                //         }
-                //     });
-                //     $.ajax({
-                //         url: "{{url('scanning')}}",
-                //         method: 'POST',
-                //         data: {
-                //             code: qrResult,
-                //             event_id: "{{$event->event_id}}",
-                //         },
-                //         success: function(response) {
-                //             toastr.options = {
-                //                 "closeButton": true,
-                //                 "debug": false,
-                //                 "newestOnTop": false,
-                //                 "progressBar": true,
-                //                 "positionClass": "toast-bottom-center", // Position at the bottom center
-                //                 "preventDuplicates": false,
-                //                 "onclick": null,
-                //                 "showDuration": "300",
-                //                 "hideDuration": "1000",
-                //                 "timeOut": "5000",
-                //                 "extendedTimeOut": "1000",
-                //                 "showEasing": "swing",
-                //                 "hideEasing": "linear",
-                //                 "showMethod": "fadeIn",
-                //                 "hideMethod": "fadeOut"
-                //             };
-                //             if(response === '1') {
-                //                 toastr.success("Berhasil");
-                //             }
-                //             else {
-                //                 toastr.error(response);
-                //             }
-                //         },
-                //         error: function(xhr, status, error) {
-                //             // document.getElementById('status-scanner').innerText = decodedText + ' GAGAL';
-                //         }
-                //     });
-
-                //     $(this).val('');
-                // }
+                if (qrResult.length > 0) {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': '<?= csrf_token() ?>'
+                        }
+                    });
+                    $.ajax({
+                        url: "{{url('scanning')}}",
+                        method: 'POST',
+                        data: {
+                            code: qrResult,
+                            event_id: "{{$event->event_id}}",
+                        },
+                        success: function(response) {
+                            toastr.options = {
+                                "closeButton": true,
+                                "debug": false,
+                                "newestOnTop": false,
+                                "progressBar": true,
+                                "positionClass": "toast-bottom-center", // Position at the bottom center
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            if(response === '1') {
+                                toastr.success("Berhasil");
+                            }
+                            else {
+                                toastr.error(response);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // document.getElementById('status-scanner').innerText = decodedText + ' GAGAL';
+                        }
+                    });
+                    table.ajax.reload();
+                    $(this).val('');
+                }
             });
 
             $(document).on('click', function() {

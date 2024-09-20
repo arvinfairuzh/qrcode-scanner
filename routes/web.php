@@ -19,6 +19,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Route::post('/scanning', [App\Http\Controllers\ScanController::class, 'scanning']);
 Route::get('/event/{event_id}', [App\Http\Controllers\HomeController::class, 'event']);
 Route::get('/event/{event_id}/report', [App\Http\Controllers\HomeController::class, 'report']);
+Route::get('/event/{event_id}/table', [App\Http\Controllers\HomeController::class, 'getAttendance']);
 Route::get('/event/{event_id}/ajax', [App\Http\Controllers\HomeController::class, 'eventAjax']);
 Route::get('/event/{event_id}/qrcode', [App\Http\Controllers\HomeController::class, 'exportQrCode']);
 Route::get('/event/{event_id}/scanned', [App\Http\Controllers\HomeController::class, 'exportReportScanned']);

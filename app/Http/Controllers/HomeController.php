@@ -10,6 +10,7 @@ use App\Models\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class HomeController extends Controller
 {
@@ -41,6 +42,25 @@ class HomeController extends Controller
         });
 
         return view('attendance', $data);
+    }
+
+    public function getAttendance()
+    {
+        $data = EventQrCode::with('qrcode')
+            ->where('scanned', 1)
+            ->orderBy('event_qrcodes.updated_at', 'desc');
+        return DataTables::of($data)
+            ->editColumn('name', function ($row) {
+                return $row->qrcode->name;
+            })
+            ->editColumn('category', function ($row) {
+                return $row->qrcode->category;
+            })
+            ->editColumn('updated_at', function ($row) {
+                return Carbon::parse($row->updated_at)->format('l, d F Y H:i:s');
+            })
+            // ->rawColumns(['order_no', 'saldo', 'total', 'dp_order', 'action', 'status', 'seat_no', 'is_reservation', 'take_saldo'])
+            ->make(true);
     }
 
     function eventAjax($event_id)
