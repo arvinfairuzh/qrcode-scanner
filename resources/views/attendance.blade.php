@@ -171,7 +171,7 @@
                                 toastr.success(response.name);
                             }
                             else {
-                                toastr.error(response);
+                                toastr.error(response.message);
                             }
                             table.ajax.reload();
                         },
