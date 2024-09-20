@@ -167,8 +167,8 @@
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            if(response === '1') {
-                                toastr.success("Berhasil");
+                            if(response?.status) {
+                                toastr.success(response.name);
                             }
                             else {
                                 toastr.error(response);

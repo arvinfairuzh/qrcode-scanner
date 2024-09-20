@@ -20,6 +20,9 @@ class ScanController extends Controller
         $findEventQrCode->scanned = true;
         $findEventQrCode->save();
 
-        return true;
+        return response()->json([
+            'status' => true,
+            'name' => $findQrCode['name'],
+        ]);
     }
 }
