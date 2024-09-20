@@ -15,7 +15,7 @@ class ScanController extends Controller
         if (!$findQrCode)
             return response()->json([
                 'status' => false,
-                'message' => 'QR Code tidak valid - ' . $findQrCode['name'],
+                'message' => 'QR Code tidak valid',
             ]);
 
         $findEventQrCode = EventQrCode::where(['event_id' => $data['event_id'], 'qrcode_id' => $findQrCode['qrcode_id']])->first();
