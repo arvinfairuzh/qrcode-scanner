@@ -111,7 +111,7 @@
                             toastr.success(response.name);
                         }
                         else {
-                            toastr.error(response);
+                            toastr.error(response.message);
                         }
                     },
                     error: function(xhr, status, error) {
